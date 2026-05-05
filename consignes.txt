@@ -1,0 +1,25 @@
+Projet pour le 10/05  à 23h55 :
+1) Implémenter Algorithme de Ford-Fulkerson pour flot max/min cut.
+               
+-> renvoie : le flot max (valeur sur chaque arc) :
+                        valeur totale.
+                        une min cut.
+
+2) Implémenter min cost flow algo pour repeated augmenting paths 
+           2,1) Avec algo de chemin et coût négatif 
+           2,2) Avec Dijkstra et renormalisation des coûts 
+
+3) Implémenter Algo de détection de cycles négatif, ne jamais avoir de cycles négatifs !
+
+----------------------------------------------------------------------------------------------
+
+Faire un rapport + README.md 
+
+Pour le rapport, expliquer :
+                                la structure de données pour le graphe résiduel 
+
+!!!! Il est interdit d'utiliser une librairie de flots (genre Network X)
+
+titre du répo: Op_Research_Projet_NOM_Prenom
+titre du mail: Op Research Projet
+Et envoyer le lien par mail (jcregin@gmail.com)
