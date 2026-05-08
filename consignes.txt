@@ -1,5 +1,5 @@
 Projet pour le 10/05  à 23h55 :
-1) Implémenter Algorithme de Ford-Fulkerson pour flot max/min cut.
+1) Implémenter Algorithme de Ford-Fulkerson pour flot max/min cut. ff3
                
 -> renvoie : le flot max (valeur sur chaque arc) :
                         valeur totale.
