@@ -1,9 +1,11 @@
 digraph graph_residual {
-	0 -> 1 [label=1]
-	0 -> 2 [label=1]
-	1 -> 0 [label=4]
-	1 -> 2 [label=2]
-	2 -> 0 [label=7]
-	3 -> 1 [label=6]
-	3 -> 2 [label=5]
+	1 -> 0 [label=20]
+	1 -> 2 [label=40]
+	1 -> 4 [label=10]
+	2 -> 0 [label=30]
+	3 -> 0 [label=10]
+	3 -> 2 [label=15]
+	4 -> 1 [label=20]
+	4 -> 2 [label=20]
+	4 -> 3 [label=20]
 }

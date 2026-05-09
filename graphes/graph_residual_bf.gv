@@ -1,0 +1,16 @@
+digraph graph_residual_bf {
+	0 -> 1 [label=15]
+	0 -> 2 [label=3]
+	0 -> 5 [label=5]
+	1 -> 2 [label=20]
+	1 -> 3 [label=4]
+	1 -> 4 [label=10]
+	2 -> 0 [label=5]
+	2 -> 3 [label=10]
+	2 -> 4 [label=4]
+	3 -> 2 [label=5]
+	3 -> 4 [label=20]
+	4 -> 2 [label=5]
+	5 -> 0 [label=15]
+	6 -> 3 [label=5]
+}

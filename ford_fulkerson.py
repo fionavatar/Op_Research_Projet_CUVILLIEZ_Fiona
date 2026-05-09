@@ -18,11 +18,11 @@ def bfs(graph : List[List[int]], s : int, t : int, parent : List[int]) -> bool:
                 parent[v] = u
                 visited[v] = True
                 queue.append(v)
-                log(f"Visite: {u} -> {v} (capacité={graph[u][v]})", 2)
+                log(f"visite: {u} -> {v} (capacité={graph[u][v]})", 2)
                 if v == t:
-                    log("Chemin augmentant trouvé", 2)
+                    log("chemin augmentant trouvé", 2)
                     return True
-    log("Aucun chemin trouvé", 2)
+    log("aucun chemin trouvé", 2)
     return False
 
 

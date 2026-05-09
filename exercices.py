@@ -3,6 +3,7 @@ from ford_fulkerson import *
 from min_cost_flow import *
 from utils import print_flow, print_cut
 from detection_cycle_negatif import detection_cycle_neg
+import sys
 import copy
 
 
@@ -263,38 +264,67 @@ def exo3_3():
 
 
 if __name__ == "__main__":
-    #1) Max flow pb
-    #exo1()
-    """
-    Flot maximum : 60
-    résultats :
-    taille de la coupe : 3
-    Min cut :
-        0 -> 1
-        0 -> 2
-        0 -> 3
 
-    flots = [[0, 20, 30, 10, 0], 
-             [-20, 0, 0, 0, 20], 
-             [-30, 0, 0, 10, 20], 
-             [-10, 0, -10, 0, 20], 
-             [0, -20, -20, -20, 0]]
-    résiduel = [[0, 0, 0, 0, 0], 
-                [20, 0, 40, 0, 10], 
-                [30, 0, 0, 0, 0], 
-                [10, 0, 15, 0, 0], 
-                [0, 20, 20, 20, 0]]
-    """
-    #2) Min cost flow assignment problem
-    exo2()
-    #2,1) Flot : 10 et Coût : 370
-    #2,2) Flot : 10 etCoût : 404
-    #2,3) Flot : 16 et  Coût : 338
+    if len(sys.argv) < 2:
+        print("Usage :")
+        print("python3 -u exercices.py exo1")
+        print("python3 -u exercices.pyexo2")
+        print("python3 -u exercices.py exo3")
+        print("python3 -u exercices.py vital")
+        print("python3 -u exercices.py  all")
 
-    #3) Min cost flow problem
-    #exo3()
-    #1 -> Flot : 20 et Coût : 150
-    #2 -> -> Flot : 23 et Coût : 187
-    #exo3_3()
-    #c'est s(5)->0 avec une capacité de 20 sans cette arête il n'y a pas de flot de s à t
+    else:
+        choice = sys.argv[1]
 
+        #1) Max flow pb
+        if choice == "exo1": 
+            exo1()
+            """
+            Flot maximum : 60
+            résultats :
+            taille de la coupe : 3
+            Min cut :
+                0 -> 1
+                0 -> 2
+                0 -> 3
+
+            flots = [[0, 20, 30, 10, 0], 
+                    [-20, 0, 0, 0, 20], 
+                    [-30, 0, 0, 10, 20], 
+                    [-10, 0, -10, 0, 20], 
+                    [0, -20, -20, -20, 0]]
+            résiduel = [[0, 0, 0, 0, 0], 
+                        [20, 0, 40, 0, 10], 
+                        [30, 0, 0, 0, 0], 
+                        [10, 0, 15, 0, 0], 
+                        [0, 20, 20, 20, 0]]
+            """
+
+        elif choice == "exo2":
+            #2) Min cost flow assignment problem
+            exo2()
+            #2,1) Flot : 10 et Coût : 370
+            #2,2) Flot : 10 etCoût : 404
+            #2,3) Flot : 16 et  Coût : 338
+
+        elif choice == "exo3":
+            #3) Min cost flow problem
+            exo3()
+            #1 -> Flot : 20 et Coût : 150
+            #2 -> -> Flot : 23 et Coût : 187
+
+        elif choice == "vital":
+            exo3_3()
+            #c'est s(5)->0 avec une capacité de 20 sans cette arête il n'y a pas de flot de s à t
+
+
+        elif choice == "all":
+
+            exo1()
+            exo2()
+            exo3()
+            exo3_3()
+
+        else:
+
+            print("Argument inconnu")

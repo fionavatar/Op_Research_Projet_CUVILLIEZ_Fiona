@@ -1,0 +1,17 @@
+digraph graph_residual_dij {
+	0 -> 1 [label=3]
+	0 -> 5 [label=20]
+	1 -> 0 [label=12]
+	1 -> 2 [label=12]
+	1 -> 4 [label=10]
+	2 -> 0 [label=8]
+	2 -> 1 [label=8]
+	2 -> 3 [label=3]
+	3 -> 1 [label=4]
+	3 -> 2 [label=12]
+	3 -> 4 [label=9]
+	4 -> 2 [label=9]
+	4 -> 3 [label=11]
+	6 -> 3 [label=5]
+	6 -> 4 [label=15]
+}

@@ -11,5 +11,34 @@ Ce projet implémente :
 
 ## Exécution
 
-```bash
+```
 python3 -u main.py
+```
+
+## Exemples
+Le fichier exemples.py contient comme son l'indique plusieurs exemples d'utilisations des algorithmes implémentés
+
+```
+python3 -u exemples.py exempleFF
+```
+
+```
+python3 -u exemples.py all
+```
+
+## Exercices
+Le fichier exercices.py contient les cas à tester avec notre programme du fichier DearStudent.
+
+## Utilisation
+
+Lancer un exercice spécifique :
+```
+python3 -u exercices.py exo1
+python3 -u exercices.py exo2
+python3 -u exercices.py exo3
+python3 -u exercices.py vital
+```
+Lancer tous les tests :
+```
+python3 -u exercices.py all
+```

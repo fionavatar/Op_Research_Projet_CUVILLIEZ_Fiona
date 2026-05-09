@@ -1,3 +1,4 @@
+import sys
 from affichage import *
 from ford_fulkerson import *
 from min_cost_flow import *
@@ -173,26 +174,61 @@ def exempleMinCostCycleB() :
 
 
 if __name__ == "__main__":
-    #1) Ford Fulkerson - MaxFlow MinCut
-    exempleFF()
-    #2) Dijkstra - Coûts Positifs
-    exempleMinCostPosD()
-    #2) BellmanFord - Coûts Positifs
-    exempleMinCostPosB()
-    #2) Dijkstra - Coûts Négatifs
-    exempleMinCostNegD()
-    #2) BellmanFord - Coûts Négatifs
-    exempleMinCostNegB()
-    #2) Dijkstra - Cycle négatif
-    exempleMinCostCycleD()
-    #2) BellmanFord - Cycle négatif
-    exempleMinCostCycleB()
 
+    if len(sys.argv) < 2:
 
+        print("Usage :")
+        print("python3 -u exemples.py exempleFF")
+        print("python3 -u exemples.py exempleMinCostPosD")
+        print("python3 -u exemples.py exempleMinCostPosB")
+        print("python3 -u exemples.py exempleMinCostNegD")
+        print("python3 -u exemples.py exempleMinCostNegB")
+        print("python3 -u exemples.py exempleMinCostCycleD")
+        print("python3 -u exemples.py exempleMinCostCycleB")
+        print("python3 -u exemples.py all")
 
+    else:
+        choice = sys.argv[1]
 
+        if choice == "exempleFF": 
+        #1) Ford Fulkerson - MaxFlow MinCut
+            exempleFF()
 
+        elif choice == "exempleMinCostPosD":
+        #2) Dijkstra - Coûts Positifs
+            exempleMinCostPosD()
 
+        elif choice == "exempleMinCostPosB":
+        #3) BellmanFord - Coûts Positifs
+            exempleMinCostPosB()
+
+        elif choice == "exempleMinCostNegD":
+        #4) Dijkstra - Coûts Négatifs
+            exempleMinCostNegD()
+
+        elif choice == "exempleMinCostNegB":
+        #5) BellmanFord - Coûts Négatifs
+            exempleMinCostNegB()
+
+        elif choice == "exempleMinCostCycleD":
+        #6) Dijkstra - Cycle négatif
+            exempleMinCostCycleD()
+
+        elif choice == "exempleMinCostCycleB":
+        #7) BellmanFord - Cycle négatif
+            exempleMinCostCycleB()
+
+        elif choice == "all":
+            exempleFF()
+            exempleMinCostPosD()
+            exempleMinCostPosB()
+            exempleMinCostNegD()
+            exempleMinCostNegB()
+            exempleMinCostCycleD()
+            exempleMinCostCycleB()
+
+        else:
+            print("Argument inconnu")
 
 
 
