@@ -2,6 +2,7 @@ from affichage import *
 from ford_fulkerson import *
 from min_cost_flow import *
 from utils import print_flow, print_cut
+from detection_cycle_negatif import detection_cycle_neg
 import copy
 
 
@@ -37,6 +38,8 @@ def min_cost_bellman_ford (graph, cost, source, puit) :
     return  matrice_flots, residuel, flot_max, cout_tt
 
 def min_cost_dijkstra (graph, cost, source, sink) :
+    if detection_cycle_neg(graph,cost) :
+        raise ValueError("cycle négatif détecté")
     matrice_flots, residuel, flot_max, cout_tt = min_cost_flow_dijkstra(graph, cost, source, sink)
     print("Flow :", flot_max)
     print("Cost :", cout_tt)

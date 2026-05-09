@@ -1,0 +1,7 @@
+digraph graph_flow_cost {
+	0 -> 1 [label="4/5 | c=4"]
+	0 -> 2 [label="7/8 | c=1"]
+	1 -> 3 [label="6/6 | c=2"]
+	2 -> 1 [label="2/2 | c=-3"]
+	2 -> 3 [label="5/5 | c=5"]
+}
