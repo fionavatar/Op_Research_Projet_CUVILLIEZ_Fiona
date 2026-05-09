@@ -20,7 +20,10 @@ def draw_flow_graph(original, residual, name, cut=None):
     for u in range(n):
         for v in range(n):
             if original[u][v] > 0:
-                flow = original[u][v] - residual[u][v]
+                if original[u][v] - residual[u][v] >= 0:
+                    flow = original[u][v] - residual[u][v]
+                else : 
+                    flow = 0
                 capacity = original[u][v]
                 label = f"{flow}/{capacity}"
                 edge = (u, v)
@@ -40,11 +43,15 @@ def draw_flow_cost_graph(original, flow, cost, name):
     for u in range(n):
         for v in range(n):
             if original[u][v] > 0:
+                if flow[u][v] >= 0:
+                    flot = flow[u][v]
+                else : 
+                    flot = 0
                 # capacité initiale
                 capacity = original[u][v]
                 # coût
                 edge_cost = cost[u][v]
                 # label complet
-                label = f"{flow[u][v]}/{capacity} | c={edge_cost}"
+                label = f"{flot}/{capacity} | c={edge_cost}"
                 dot.edge(str(u), str(v),label=label)
     dot.render(directory = "graphes", view=True)

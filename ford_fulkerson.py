@@ -1,7 +1,7 @@
 from collections import deque
 from typing import List, Tuple
-from main import log
-
+from utils import log
+import copy
 
 def bfs(graph : List[List[int]], s : int, t : int, parent : List[int]) -> bool: 
     n = len(graph)
@@ -27,16 +27,17 @@ def bfs(graph : List[List[int]], s : int, t : int, parent : List[int]) -> bool:
 
 
 def ford_fulkerson(graph : List[List[int]], s : int, t : int) -> Tuple[int, List[List[int]], List[List[int]]] :
+    residual  = copy.deepcopy(graph) #copie du réseau d'origine pour créer le résiduel
     n = len(graph)
     parent = [-1] * n
-    max_flow = 0
+    flot_max = 0
     # matrice de flot
-    flow = [[0]*n for _ in range(n)]
+    flot = [[0]*n for _ in range(n)]
     step = 0
 
     log("Début algo ford-fulkerson", 0)
 
-    while bfs(graph, s, t, parent):
+    while bfs(residual, s, t, parent):
         path_flow = float("inf")
         v = t
         # calcul goulot
@@ -44,7 +45,7 @@ def ford_fulkerson(graph : List[List[int]], s : int, t : int) -> Tuple[int, List
         # trouver le goulot d'étranglement
         while v != s:
             u = parent[v]
-            path_flow = min(path_flow, graph[u][v])
+            path_flow = min(path_flow, residual[u][v])
             path.append((u,v))
             v = u
 
@@ -53,24 +54,22 @@ def ford_fulkerson(graph : List[List[int]], s : int, t : int) -> Tuple[int, List
         log(f"chemin : {path}", 1)
         log(f"flux du chemin : {path_flow}", 1)
         
-        max_flow += path_flow
+        flot_max += path_flow
         # mise à jour du graphe résiduel et du flot
         v = t
         while v != s:
             u = parent[v]
-
-            graph[u][v] -= path_flow
-            graph[v][u] += path_flow
-
-            flow[u][v] += path_flow
-            flow[v][u] -= path_flow
+            residual[u][v] -= path_flow
+            residual[v][u] += path_flow
+            flot[u][v] += path_flow
+            flot[v][u] -= path_flow
             v = u
 
-        log(f"flot total actuel : {max_flow}", 1)
+        log(f"flot total actuel : {flot_max}", 1)
         step += 1
 
-    log(f"flot total actuel : {max_flow}", 1)
-    return max_flow, graph, flow
+    log(f"flot total actuel : {flot_max}", 1)
+    return flot_max, residual, flot
 
 
 def min_cut(original : List[List[int]], residual : List[List[int]], source : int) -> List[Tuple[int,int]]:

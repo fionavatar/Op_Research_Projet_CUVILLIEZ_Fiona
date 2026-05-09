@@ -1,65 +1,52 @@
 from affichage import *
 from ford_fulkerson import *
 from min_cost_flow import *
-import copy
-
-DEBUG = True
-
-def log(msg: str, level: int) -> None:
-    if DEBUG:
-        print("    " * level + msg)
+from detection_cycle_negatif import detection_cycle_neg
+from utils import print_flow, print_cut
 
 
-def print_flow(flow):
-    log("\nFlot sur chaque arc :", 0)
-    n = len(flow)
-    for i in range(n):
-        for j in range(n):
-            if flow[i][j] > 0:
-                log(f"{i} -> {j} : {flow[i][j]}", 1)
-
-
-def print_cut(cut):
-    log("\nMin cut :", 0)
-    for u, v in cut:
-        log(f"{u} -> {v}", 1)
-
-
-def run_ff(graph, source, sink):
+def max_flow_min_cut_ford_fulkerson(graph, source, puit):
     log("FORD-FULKERSON", 0)
     # affichage initial
     draw_graph(graph, "graph_initial")
     #sauvegarde du graphe original
-    original_graph = copy.deepcopy(graph) 
-    max_flow, residual, flow = ford_fulkerson(graph, source, sink)
+    flot_max, residuel, matrice_flots = ford_fulkerson(graph, source, puit)
     # affichages graphiques
-    draw_graph(residual, "graph_residual")
-    log(f"\nFlux maximum : {max_flow}", 0)
-    print_flow(flow)
+    draw_graph(residuel, "graph_residual")
+    log(f"\nFlux maximum : {flot_max}", 0)
+    print_flow(matrice_flots)
     #sans la cut
-    #draw_flow_graph(original_graph, residual, "graph_flow")
-    cut = min_cut(original_graph, residual, source)
+    draw_flow_graph(graph, residuel, "graph_flow")
+    cut = min_cut(graph, residuel, source)
     #avec la cut
-    draw_flow_graph(original_graph, residual, "graph_flow", cut)
+    draw_flow_graph(graph, residuel, "graph_flow", cut)
     print_cut(cut)
 
-    return max_flow, residual, flow, cut
+    return flot_max, residuel, matrice_flots, cut
 
 
-def run_mcf_bf (graph, cost, source, sink) :
-    original_graph = copy.deepcopy(graph) 
-    flow, residual, maxflow, total_cost = min_cost_flow_bellman_ford(graph, cost, source, sink)
-    print("Flow :", maxflow)
-    print("Cost :", total_cost)
-    print_flow(flow)
-    draw_graph(residual, "graph_residual")
-    draw_flow_cost_graph(original_graph, flow, cost, "graph_flow_cost")
+def min_cost_bellman_ford (graph, cost, source, puit) :
+    matrice_flots, residuel, flot_max, cout_tt = min_cost_flow_bellman_ford(graph, cost, source, puit)
+    print("Flot :", flot_max)
+    print("Coût :", cout_tt)
+    print_flow(matrice_flots)
+    draw_graph(residuel, "graph_residual")
+    draw_flow_cost_graph(graph, matrice_flots, cost, "graph_flow_cost")
 
+
+def min_cost_dijkstra (graph, cost, source, sink) :
+    if detection_cycle_neg(graph,cost) :
+        raise ValueError("cycle négatif détecté")
+    matrice_flots, residuel, flot_max, cout_tt = min_cost_flow_dijkstra(graph, cost, source, sink)
+    print("Flow :", flot_max)
+    print("Cost :", cout_tt)
+    print_flow(matrice_flots)
+    draw_graph(residuel, "graph_residual")
+    draw_flow_cost_graph(graph, matrice_flots, cost, "graph_flow_cost")
 
 
 if __name__ == "__main__":
-
-    graph0 = [
+    capacities0 = [
         [0, 16, 13, 0, 0, 0],
         [0, 0, 10, 12, 0, 0],
         [0, 4, 0, 0, 14, 0],
@@ -68,15 +55,7 @@ if __name__ == "__main__":
         [0, 0, 0, 0, 0, 0]
     ]
 
-    graph1 = [
-        [0, 20, 30, 10, 0],
-        [0, 0, 40, 0, 30],
-        [0, 0, 0, 10, 20],
-        [0, 0, 5, 0, 20],
-        [0, 0, 0, 0, 0]
-    ]
-
-    graph2 = [
+    capacities1 = [
        # s, a, b, c, d, e, t
         [0, 4, 0, 0, 0, 9, 0], #s
         [0, 0, 2, 0, 3, 0, 0], #a
@@ -87,63 +66,102 @@ if __name__ == "__main__":
         [0, 0, 0, 0, 0, 0, 0] #t
     ]
     # 1) FORD_FULKERSON
-    #run_ff(graph0, 0, 5)
-    #run_ff(graph1, 0, 4)
-    #run_ff(graph2, 0, 6)
+    #run_ff(capacities0, 0, 5)
+    #run_ff(capacities1, 0, 6)
 
     # 2) min cost flow algo pour repeated augmenting paths 
-    capacity0 = [
+    capacities2 = [
     [0, 3, 4, 5, 0],
     [0, 0, 2, 0, 0],
     [0, 0, 0, 4, 1],
     [0, 0, 0, 0, 10],
-    [0, 0, 0, 0, 0]
-    ]
-    cost0 = [
+    [0, 0, 0, 0, 0]]
+    cost2 = [
         [0, 1, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-    ]
+        [0, 0, 0, 0, 0]]
     
-    capacity1 = [
+
+    capacities3 = [
     [0, 1, 0, 0, 2],
     [0, 0, 0, 3, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 1],
-    [0, 0, 0, 0, 0]
-    ]
-    cost1 = [
+    [0, 0, 0, 0, 0]]
+
+    cost5 = [
         [0, 3, 1, 0, 3],
         [0, 0, 2, 0, 0],
         [0, 0, 0, 1, 6],
         [0, 0, 0, 0, 2],
-        [0, 0, 0, 0, 0]
-    ]
+        [0, 0, 0, 0, 0]]
 
-    capacity2 = [ 
+    capacities4 = [ 
             [ 0, 3, 1, 0, 3 ], 
             [ 0, 0, 2, 0, 0 ], 
             [ 0, 0, 0, 1, 6 ], 
             [ 0, 0, 0, 0, 2 ],
             [ 0, 0, 0, 0, 0 ] ]
 
-    cost2 = [ [ 0, 1, 0, 0, 2 ], 
+    cost4 = [ [ 0, 1, 0, 0, 2 ], 
              [ 0, 0, 0, 3, 0 ], 
              [ 0, 0, 0, 0, 0 ], 
              [ 0, 0, 0, 0, 1 ],
              [ 0, 0, 0, 0, 0 ] ]  
-     
+    
+    #coût négatif
+    capacities5 = [
+    [0, 5, 8, 0],
+    [0, 0, 0, 6],
+    [0, 2, 0, 5],
+    [0, 0, 0, 0]]
+
+    cost5 = [
+    [0, 4, 1, 0],
+    [0, 0, 0, 2],
+    [0, -3, 0, 5],
+    [0, 0, 0, 0]]
+
+    #cycle négatif
+    cost6 = [
+    [0,  1,  0],
+    [0,  0, -4],
+    [2,  0,  0]]
+    
+    capacities6 = [
+    [0,  5,  0],
+    [0,  0, 5],
+    [5,  0,  0]]
+
+    capacities7 = [
+    [0, 10, 8, 0],
+    [0, 0, 5, 10],
+    [0, 0, 0, 10],
+    [0, 0, 0, 0]]
+
+    cost7 = [
+    [0, 2, 4, 0],
+    [0, 0, 1, 2],
+    [0, 0, 0, 1],
+    [0, 0, 0, 0]]
+
     # 2.1) Avec algo de chemin et coût négatif 
     #resultat -> max flow 10 et min cost 1
     #run_mcf_bf(capacity0,cost0,0,4)
     #run_mcf_bf(capacity1, cost1, 0, 4)
     #resultat -> max flow 6 et min cost 8
-    run_mcf_bf(capacity2, cost2, 0, 4)
+    print("bellman ford")
+    #min_cost_bellman_ford(capacities6, cost6, 0, 2) #ValueError("cycle négatif détecté")
+    min_cost_bellman_ford(capacities5, cost5, 0, 3)
+    min_cost_bellman_ford(capacities7, cost7, 0, 3)
 
 
     # 2.2) Avec Dijkstra et renormalisation des coûts 
+    print("dijkstra")
+    min_cost_dijkstra(capacities5, cost5, 0, 3)
+    min_cost_dijkstra(capacities7, cost7, 0, 3)
 
 
 

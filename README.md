@@ -1,12 +1,15 @@
 # Op_Research_Projet_CUVILLIEZ_Fiona
-1) Algorithme de Ford-Fulkerson pour flot max/min cut.
-               
--> renvoie : le flot max (valeur sur chaque arc) :
-                        valeur totale.
-                        une min cut.
+Ce projet implémente :
 
-2) min cost flow algo pour repeated augmenting paths 
-           2,1) Avec algo de chemin et coût négatif (Bellman-Ford)
-           2,2) Avec Dijkstra et renormalisation des coûts 
+1. Ford-Fulkerson (flot maximal + coupe minimale)
+2. Min Cost Flow :
+   - Bellman-Ford
+   - Dijkstra avec renormalisation des coûts
+3. Détection de cycles négatifs
 
-3) Algo de détection de cycles négatif, ne jamais avoir de cycles négatifs !
+---
+
+## Exécution
+
+```bash
+python3 -u main.py

@@ -1,5 +1,6 @@
 from heapq import heappush, heappop
 from typing import List, Tuple
+import copy
 
 """
 Implémentation min cost flow algo pour repeated augmenting paths 
@@ -35,47 +36,49 @@ def bellman_ford(graph: List[List[int]],cost: List[List[int]],s: int) -> Tuple[L
 
 
 def min_cost_flow_bellman_ford(graph: List[List[int]],cost: List[List[int]],s: int, t:int) -> Tuple[List[List[int]], List[List[int]], int, int]:
+    residual  = copy.deepcopy(graph) #copie du réseau d'origine pour créer le résiduel
+    couts  = copy.deepcopy(cost) #copie des couts
     #étape 1 : initialisation
-    n = len(graph)
-    max_flow = 0
-    total_cost = 0
+    n = len(residual)
+    flot_max = 0
+    cout_tt = 0
     # matrice de flot
-    flow = [[0]*n for _ in range(n)]
+    matrice_flots = [[0]*n for _ in range(n)]
 
     #étape 2
     while True:
-        dist, parent = bellman_ford(graph, cost, s) #plus court chemin
+        dist, parent = bellman_ford(residual, couts, s) #plus court chemin
         #plus de chemin augmentant
         if parent[t] == -1:
             break
         #calcul du flot du chemin
-        path_flow = float("inf")
+        chemin = float("inf")
         v = t
         while v != s:
             u = parent[v]
-            path_flow = min(path_flow, graph[u][v])
+            chemin = min(chemin, residual[u][v])
             v = u
-        max_flow += path_flow
-        total_cost += path_flow * dist[t]
+        flot_max += chemin
+        cout_tt += chemin * dist[t]
         #mise à jour du graphe résiduel
         v = t
         while v != s:
             u = parent[v]
             #capacité résiduel
-            graph[u][v] -= path_flow
-            graph[v][u] += path_flow
+            residual[u][v] -= chemin
+            residual[v][u] += chemin
             #arête inverse ducoût oppposé
-            cost[v][u] = -cost[u][v]
+            couts[v][u] = -couts[u][v]
             #mise à jour du flot
-            flow[u][v] += path_flow
-            flow[v][u] -= path_flow
+            matrice_flots[u][v] += chemin
+            matrice_flots[v][u] -= chemin
             v = u
 
-    return flow, graph, max_flow, total_cost
+    return matrice_flots, residual, flot_max, cout_tt
 
 
 #2ème approche avec l'algorithme de Dijkstra
-def dijkstra(graph: List[List[int]],cost: List[List[int]],s: int, potential: List[int]) -> Tuple[List[float, List[int]]]:
+def dijkstra(graph: List[List[int]], cost: List[List[int]],s: int, h: List[int]) -> Tuple[List[float], List[int]]:
     # étape 1 initialisation
     n = len(graph)
     dist = [float("inf")] * n #pour chaque simmet on initialise à +inf
@@ -91,7 +94,7 @@ def dijkstra(graph: List[List[int]],cost: List[List[int]],s: int, potential: Lis
         for v in range(n):  #on regarde les voisins
             if graph[u][v] > 0: #arête dans le graphe
                 # on normalise le cout
-                new_cost = cost[u][v] + potential[u] - potential[v]
+                new_cost = cost[u][v] + h[u] - h[v]
                 new_dist = dist[u] + new_cost
                 #relaxation
                 if new_dist < dist[v]:
@@ -104,44 +107,46 @@ def dijkstra(graph: List[List[int]],cost: List[List[int]],s: int, potential: Lis
 
 
 def min_cost_flow_dijkstra(graph: List[List[int]],cost: List[List[int]],s: int, t:int) -> Tuple[List[List[int]], List[List[int]], int, int]:
-    n = len(graph)
-    max_flow = 0
-    total_cost = 0
-    # potentiels pour normaliser
-    potential = [0] * n
+    residual  = copy.deepcopy(graph) #copie du réseau d'origine pour créer le résiduel
+    couts  = copy.deepcopy(cost) #copie des couts
+    n = len(residual)
+    flot_max = 0
+    cout_tt = 0
+    # pour normaliser les coûts négatifs
+    h = [0]*n
      # matrice de flot
-    flow = [[0]*n for _ in range(n)]
+    matrice_flots = [[0]*n for _ in range(n)]
 
     while True:
-        dist, parent = dijkstra(graph, cost, s, potential)
+        dist, parent = dijkstra(residual, couts, s, h)
         if parent[t] == -1:
             break
-        # mise à jour des potentiels
+        # mise à jour normalisation
         for i in range(n):
             if dist[i] < float("inf"):
-                potential[i] += dist[i]
+                h[i] += dist[i]
         # trouver flow minimum
-        path_flow = float("inf")
+        chemin = float("inf")
         v = t
         while v != s:
             u = parent[v]
-            path_flow = min(path_flow, graph[u][v])
+            chemin = min(chemin, residual[u][v])
             v = u
-            
-        max_flow += path_flow
-        total_cost += path_flow * potential[t]
+
+        flot_max += chemin
         # mise à jour du graphe
         v = t
         while v != s:
             u = parent[v]
+            cout_tt += chemin * couts[u][v]
             #capacité résiduel
-            graph[u][v] -= path_flow
-            graph[v][u] += path_flow
-            #arête inverse ducoût oppposé
-            cost[v][u] = -cost[u][v]
+            residual[u][v] -= chemin
+            residual[v][u] += chemin
+            #arête inverse du coût oppposé
+            couts[v][u] = -couts[u][v]
             #mise à jour du flot
-            flow[u][v] += path_flow
-            flow[v][u] -= path_flow
+            matrice_flots[u][v] += chemin
+            matrice_flots[v][u] -= chemin
             v = u
 
-    return flow, graph, max_flow, total_cost
+    return matrice_flots, residual, flot_max, cout_tt
