@@ -57,8 +57,14 @@ Le fichier exercices.py contient les cas à tester avec notre programme du fichi
 Lancer un exercice spécifique :
 ```
 python3 -u exercices.py exo1
+```
+```
 python3 -u exercices.py exo2
+```
+```
 python3 -u exercices.py exo3
+```
+```
 python3 -u exercices.py vital
 ```
 Lancer tous les tests :
