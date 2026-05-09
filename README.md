@@ -43,8 +43,7 @@ python3 -u exemples.py exempleMinCostCycleD
 ```
 python3 -u exemples.py exempleMinCostCycleB
 ```
-
-       
+Lancer tous les exemples :     
 ```
 python3 -u exemples.py all
 ```
