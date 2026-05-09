@@ -7,11 +7,11 @@ Avec algo de chemin et coût négatif
 """
 #Première approche avec l'algorithme de Bellman-Ford
 #complexité O(NM**2)
-def bellman_ford(graph: List[List[int]],cost: List[List[int]],source: int) -> Tuple[List[float], List[int]]:
+def bellman_ford(graph: List[List[int]],cost: List[List[int]],s: int) -> Tuple[List[float], List[int]]:
     n = len(graph)
     # étape 1 : on initialise les distances
     dist = [float("inf")] * n
-    dist[source] = 0
+    dist[s] = 0
     # parents pour reconstruire chemin
     parent = [-1] * n
     # relaxation des arêtes
@@ -75,13 +75,13 @@ def min_cost_flow_bellman_ford(graph: List[List[int]],cost: List[List[int]],s: i
 
 
 #2ème approche avec l'algorithme de Dijkstra
-def dijkstra(graph, cost, source, potential):
+def dijkstra(graph, cost, s, potential):
     n = len(graph)
     dist = [float("inf")] * n
     parent = [-1] * n
 
-    dist[source] = 0
-    pq = [(0, source)]
+    dist[s] = 0
+    pq = [(0, s)]
 
     while pq:
         d, u = heappop(pq)
