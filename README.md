@@ -16,12 +16,35 @@ python3 -u main.py
 ```
 
 ## Exemples
-Le fichier exemples.py contient comme son l'indique plusieurs exemples d'utilisations des algorithmes implémentés
+Le fichier exemples.py contient comme son nom l'indique plusieurs exemples d'utilisations des algorithmes implémentés
+
+## Utilisation
+
+Lancer un exemple spécifique :
 
 ```
 python3 -u exemples.py exempleFF
 ```
+```
+python3 -u exemples.py exempleMinCostPosD
+```
+```
+python3 -u exemples.py exempleMinCostPosB
+```
+```
+python3 -u exemples.py exempleMinCostNegD
+```
+```
+python3 -u exemples.py exempleMinCostNegB
+```
+```
+python3 -u exemples.py exempleMinCostCycleD
+```
+```
+python3 -u exemples.py exempleMinCostCycleB
+```
 
+       
 ```
 python3 -u exemples.py all
 ```
