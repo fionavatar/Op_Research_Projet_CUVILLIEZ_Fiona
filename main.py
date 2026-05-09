@@ -48,25 +48,27 @@ def min_cost_dijkstra (graph, cost, source, sink) :
 
 if __name__ == "__main__":
 
-    capacities7 = [
+    capacities = [
     [0, 10, 8, 0],
     [0, 0, 5, 10],
     [0, 0, 0, 10],
     [0, 0, 0, 0]]
 
-    cost7 = [
+    cost = [
     [0, 2, 4, 0],
     [0, 0, 1, 2],
     [0, 0, 0, 1],
     [0, 0, 0, 0]]
 
+    #1) Max flow min cut - Ford Fulkerson
+    max_flow_min_cut_ford_fulkerson(capacities, 0, 3)
     # 2.1) Avec algo de chemin et coût négatif 
     print("bellman ford")
-    min_cost_bellman_ford(capacities7, cost7, 0, 3)
+    min_cost_bellman_ford(capacities, cost, 0, 3)
 
     # 2.2) Avec Dijkstra et renormalisation des coûts 
     print("dijkstra")
-    min_cost_dijkstra(capacities7, cost7, 0, 3)
+    min_cost_dijkstra(capacities, cost, 0, 3)
  
 
 
