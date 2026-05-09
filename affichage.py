@@ -1,57 +1,62 @@
-from graphviz import Digraph
-
+import os
 
 def draw_graph(graph, name):
-    dot = Digraph(name)
     n = len(graph)
+    lines = ["digraph " + name + " {", "    rankdir=LR;"]
     for u in range(n):
         for v in range(n):
             if graph[u][v] > 0:
-                dot.edge(str(u), str(v), label=str(graph[u][v]))
-
-    dot.render(directory = "graphes", view=True)
-
+                lines.append(f'    {u} -> {v} [label="{graph[u][v]}"];')
+    lines.append("}")
+    
+    dot_path = f"graphes/{name}.dot"
+    pdf_path = f"graphes/{name}"
+    os.makedirs("graphes", exist_ok=True)
+    with open(dot_path, "w") as f:
+        f.write("\n".join(lines))
+    os.system(f"dot -Tpdf {dot_path} -o {pdf_path}.pdf")
 
 
 def draw_flow_graph(original, residual, name, cut=None):
-    dot = Digraph(name)
     n = len(original)
     cut_set = set(cut) if cut else set()
+    lines = ["digraph " + name + " {", "    rankdir=LR;"]
     for u in range(n):
         for v in range(n):
             if original[u][v] > 0:
-                if original[u][v] - residual[u][v] >= 0:
-                    flow = original[u][v] - residual[u][v]
-                else : 
-                    flow = 0
+                flow = max(0, original[u][v] - residual[u][v])
                 capacity = original[u][v]
                 label = f"{flow}/{capacity}"
-                edge = (u, v)
-                # si dans min-cut
-                if edge in cut_set:
-                    dot.edge(str(u), str(v), label=label, color="red", penwidth="3")
+                if (u, v) in cut_set:
+                    lines.append(
+                        f'    {u} -> {v} [label="{label}", color=red, penwidth=3];'
+                    )
                 else:
-                    dot.edge(str(u), str(v), label=label)
+                    lines.append(f'    {u} -> {v} [label="{label}"];')
+    lines.append("}")
 
-    dot.render(directory = "graphes", view=True)
-
+    dot_path = f"graphes/{name}.dot"
+    os.makedirs("graphes", exist_ok=True)
+    with open(dot_path, "w") as f:
+        f.write("\n".join(lines))
+    os.system(f"dot -Tpdf {dot_path} -o graphes/{name}.pdf")
 
 
 def draw_flow_cost_graph(original, flow, cost, name):
-    dot = Digraph(name)
     n = len(original)
+    lines = ["digraph " + name + " {", "    rankdir=LR;"]
     for u in range(n):
         for v in range(n):
             if original[u][v] > 0:
-                if flow[u][v] >= 0:
-                    flot = flow[u][v]
-                else : 
-                    flot = 0
-                # capacité initiale
-                capacity = original[u][v]
-                # coût
+                flot = max(0, flow[u][v])
+                capacity  = original[u][v]
                 edge_cost = cost[u][v]
-                # label complet
                 label = f"{flot}/{capacity} | c={edge_cost}"
-                dot.edge(str(u), str(v),label=label)
-    dot.render(directory = "graphes", view=True)
+                lines.append(f'    {u} -> {v} [label="{label}"];')
+    lines.append("}")
+
+    dot_path = f"graphes/{name}.dot"
+    os.makedirs("graphes", exist_ok=True)
+    with open(dot_path, "w") as f:
+        f.write("\n".join(lines))
+    os.system(f"dot -Tpdf {dot_path} -o graphes/{name}.pdf")
