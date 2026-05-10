@@ -97,39 +97,6 @@ def link_assignements(costs, task_capacity):
     return capacity, cost_matrix, super_source, super_puit
 
 
-def link_assignments_lower_bound(costs):
-    people = len(costs)
-    tasks = len(costs[0])
-
-    n = 1 + people + tasks + 1 # super-source +  10 personnes + 8 tâches + super-puits
-    super_source = 0
-    super_puit = n - 1
-
-    capacity = [[0]*n for _ in range(n)]
-    cost_matrix = [[0]*n for _ in range(n)]
-
-    task_nodes = [people + 1 + t for t in range(tasks)]
-
-    # 1) source -> people
-    for p in range(people):
-        capacity[super_source][p+1] = 1
-
-    # 2) people -> tasks
-    for p in range(people):
-        for t in range(tasks):
-            u = p + 1
-            v = task_nodes[t]
-            capacity[u][v] = 1
-            cost_matrix[u][v] = costs[p][t]
-
-    # 3) LOWER BOUND = on force 1 personne par tâche
-    for t in range(tasks):
-        capacity[task_nodes[t]][super_puit] = 1   # reste après le "minimum"
-
-    # 4) on ajoute un pré-flot obligatoire (1 par tâche)
-    forced_flow_cost = 0
-
-    return capacity, cost_matrix, super_source, super_puit, forced_flow_cost
 
 def lower_upper_cap(costs, min_per_task=1, max_per_task=2):
     people = len(costs)
@@ -235,8 +202,8 @@ def exo3():
     min_cost_bellman_ford (matrix_cap, cost_matrix, 5, 6) #-> Flot : 20 et Coût : 150
     min_cost_dijkstra (matrix_cap, cost_matrix, 5, 6)
     #2) Search fpr the max flow min cost in (0,4)
-    #min_cost_bellman_ford (matrix_cap, cost_matrix, 0, 4) #-> Flot : 23 et Coût : 187
-    #min_cost_dijkstra (matrix_cap, cost_matrix, 0, 4)
+    min_cost_bellman_ford (matrix_cap, cost_matrix, 0, 4) #-> Flot : 23 et Coût : 187
+    min_cost_dijkstra (matrix_cap, cost_matrix, 0, 4)
 
 
 def exo3_3(): 
